@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sithum Vihanga — Cybersecurity Researcher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e14;
+    --glass: rgba(255,255,255,0.045);
+    --glass-strong: rgba(255,255,255,0.075);
+    --border: rgba(255,255,255,0.09);
+    --border-strong: rgba(255,255,255,0.16);
+    --text:#f0f2f6;
+    --text-muted:#9aa2b1;
+    --text-faint:#5c6474;
+    --accent:#7c9bff;
+    --accent-soft:#a9c0ff;
+    --mono:'IBM Plex Mono', monospace;
+    --sans:'Inter', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.55;
+    overflow-x:hidden;
+    position:relative;
+  }
+  /* ambient glass blobs */
+  .blob{
+    position:fixed; border-radius:50%;
+    filter:blur(90px);
+    z-index:0; pointer-events:none;
+  }
+  .blob-1{width:480px; height:480px; top:-140px; left:-120px; background:radial-gradient(circle, rgba(124,155,255,0.28), transparent 70%);}
+  .blob-2{width:520px; height:520px; top:30%; right:-180px; background:radial-gradient(circle, rgba(140,110,255,0.18), transparent 70%);}
+  .blob-3{width:420px; height:420px; bottom:-160px; left:20%; background:radial-gradient(circle, rgba(90,200,220,0.14), transparent 70%);}
+
+  ::selection{background:var(--accent); color:#0b0e14;}
+  a{color:inherit;}
+
+  section{
+    position:relative; z-index:2;
+    padding:6.5rem 4vw;
+    max-width:1140px; margin:0 auto;
+  }
+
+  /* GLASS PANEL BASE */
+  .glass{
+    background:var(--glass);
+    backdrop-filter:blur(22px) saturate(140%);
+    -webkit-backdrop-filter:blur(22px) saturate(140%);
+    border:1px solid var(--border);
+    border-radius:22px;
+  }
+  .glass:hover{border-color:var(--border-strong);}
+
+  /* NAV */
+  nav{
+    position:fixed; top:1.1rem; left:50%; transform:translateX(-50%);
+    z-index:50;
+    display:flex; justify-content:space-between; align-items:center;
+    gap:2.5rem;
+    padding:0.85rem 1.6rem;
+    width:min(920px, 92vw);
+    background:rgba(20,24,34,0.55);
+    backdrop-filter:blur(18px) saturate(160%);
+    -webkit-backdrop-filter:blur(18px) saturate(160%);
+    border:1px solid var(--border);
+    border-radius:999px;
+  }
+  .nav-mark{font-weight:700; font-size:0.92rem; letter-spacing:-0.01em;}
+  .nav-mark span{color:var(--accent-soft);}
+  .nav-links{display:flex; gap:1.8rem; font-size:0.82rem; color:var(--text-muted);}
+  .nav-links a{text-decoration:none; transition:color .25s;}
+  .nav-links a:hover, .nav-links a:focus-visible{color:var(--text);}
+  @media (max-width:760px){ .nav-links{display:none;} }
+
+  /* HERO */
+  .hero{
+    min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    padding-top:8rem;
+  }
+  .avatar-ring{
+    width:132px; height:132px; border-radius:50%;
+    padding:5px;
+    background:conic-gradient(from 180deg, rgba(124,155,255,0.5), rgba(140,110,255,0.35), rgba(90,200,220,0.35), rgba(124,155,255,0.5));
+    margin-bottom:2rem;
+  }
+  .avatar{
+    width:100%; height:100%; border-radius:50%;
+    background:linear-gradient(145deg, #1c2230, #11151d);
+    border:3px solid rgba(11,14,20,0.9);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:2.1rem; letter-spacing:0.02em;
+    color:var(--accent-soft);
+    background-size:cover; background-position:center;
+    overflow:hidden;
+  }
+  .avatar img{width:100%; height:100%; object-fit:cover; border-radius:50%;}
+
+  .status-chip{
+    display:inline-flex; align-items:center; gap:0.6em;
+    padding:0.5em 1.1em;
+    font-size:0.78rem; color:var(--text-muted);
+    margin-bottom:1.8rem;
+  }
+  .status-chip .dot{width:7px;height:7px;border-radius:50%;background:#6fe3a5; box-shadow:0 0 10px #6fe3a5;}
+
+  .hero-name{
+    font-weight:800;
+    font-size:clamp(2.6rem, 8vw, 5.2rem);
+    line-height:1.02;
+    letter-spacing:-0.03em;
+  }
+  .hero-name .accent-word{
+    background:linear-gradient(90deg, var(--accent-soft), #c7d4ff);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero-title{
+    margin-top:1.1rem;
+    font-size:clamp(1rem, 2vw, 1.3rem);
+    color:var(--text-muted);
+    font-weight:500;
+  }
+
+  .hero-contact{
+    margin-top:2.6rem;
+    display:flex; flex-wrap:wrap; justify-content:center; gap:0.8rem;
+  }
+  .pill{
+    padding:0.65em 1.3em;
+    font-size:0.82rem;
+    color:var(--text-muted);
+    text-decoration:none;
+    transition:all .25s;
+  }
+  .pill:hover{color:var(--text); background:var(--glass-strong);}
+
+  /* SECTION HEADS */
+  .sec-head{margin-bottom:2.6rem;}
+  .sec-eyebrow{font-size:0.78rem; color:var(--accent-soft); font-weight:600; letter-spacing:0.04em; margin-bottom:0.5rem;}
+  .sec-title{font-size:clamp(1.5rem,3vw,2.1rem); font-weight:700; letter-spacing:-0.02em;}
+
+  /* ABOUT */
+  .about-panel{padding:2.4rem 2.6rem;}
+  .about-panel p{color:var(--text-muted); font-size:1.05rem; max-width:66ch; margin-bottom:1.1rem;}
+  .about-panel p:last-child{margin-bottom:0;}
+  .about-panel strong{color:var(--text); font-weight:600;}
+  .tag-row{display:flex; flex-wrap:wrap; gap:0.6rem; margin-top:1.6rem;}
+  .tag{
+    font-size:0.75rem; padding:0.45em 0.95em; border-radius:999px;
+    background:rgba(124,155,255,0.09); border:1px solid rgba(124,155,255,0.22);
+    color:var(--accent-soft);
+  }
+
+  /* EXPERIENCE */
+  .exp-panel{padding:2.4rem 2.6rem;}
+  .exp-top{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.4rem;}
+  .exp-top h3{font-size:1.4rem; font-weight:700;}
+  .badge-success{
+    font-size:0.72rem; color:#6fe3a5; background:rgba(111,227,165,0.1);
+    border:1px solid rgba(111,227,165,0.28); padding:0.4em 0.9em; border-radius:999px;
+  }
+  .exp-panel p{color:var(--text-muted); font-size:1rem; max-width:68ch; margin-bottom:1.6rem;}
+  .exp-panel p strong{color:var(--text);}
+  .field-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:1.3rem; padding-top:1.4rem; border-top:1px solid var(--border);}
+  .field-grid .k{font-size:0.7rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.06em; display:block; margin-bottom:0.4em;}
+  .field-grid .v{font-size:0.92rem; color:var(--text);}
+
+  /* SKILLS */
+  .skills-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:1rem;}
+  .skill-card{padding:1.5rem 1.4rem; display:flex; flex-direction:column; gap:0.5rem; transition:transform .25s;}
+  .skill-card:hover{transform:translateY(-3px);}
+  .skill-dot{width:8px; height:8px; border-radius:50%; background:var(--accent-soft);}
+  .skill-name{font-size:1rem; font-weight:600;}
+
+  /* EDUCATION */
+  .edu-panel{padding:1.9rem 2.4rem; display:flex; justify-content:space-between; align-items:center; gap:1.5rem; flex-wrap:wrap;}
+  .edu-panel h3{font-size:1.2rem; font-weight:700; margin-bottom:0.3em;}
+  .edu-panel p{color:var(--text-muted); font-size:0.95rem;}
+  .edu-status{font-size:0.75rem; color:var(--accent-soft); background:rgba(124,155,255,0.1); border:1px solid rgba(124,155,255,0.24); padding:0.5em 1em; border-radius:999px; white-space:nowrap;}
+
+  /* CERTS */
+  .cert-grid{display:grid; grid-template-columns:1fr 1fr; gap:1rem;}
+  @media (max-width:760px){ .cert-grid{grid-template-columns:1fr;} }
+  .cert-card{padding:1.4rem 1.6rem;}
+  .cert-card .name{font-weight:600; font-size:0.98rem; margin-bottom:0.5rem;}
+  .cert-card .issuer{font-size:0.82rem; color:var(--text-muted); margin-bottom:0.9rem;}
+  .cert-card .meta{display:flex; justify-content:space-between; font-family:var(--mono); font-size:0.72rem; color:var(--text-faint); border-top:1px solid var(--border); padding-top:0.8rem;}
+  .cert-card .meta span:last-child{color:var(--accent-soft);}
+
+  /* ACHIEVEMENTS */
+  .achieve-panel{padding:2rem 2.4rem; display:flex; gap:1.6rem; align-items:center; flex-wrap:wrap;}
+  .achieve-icon{
+    width:60px; height:60px; border-radius:18px; flex-shrink:0;
+    background:linear-gradient(145deg, rgba(124,155,255,0.22), rgba(140,110,255,0.14));
+    border:1px solid var(--border-strong);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.5rem;
+  }
+  .achieve-text h3{font-size:1.15rem; font-weight:700; margin-bottom:0.3em;}
+  .achieve-text p{color:var(--text-muted); font-size:0.9rem;}
+
+  footer{
+    padding:3rem 4vw 4rem; text-align:center;
+    font-size:0.8rem; color:var(--text-faint);
+    position:relative; z-index:2;
+  }
+
+  .reveal{opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){ .reveal{opacity:1; transform:none; transition:none;} }
+  :focus-visible{outline:2px solid var(--accent-soft); outline-offset:3px;}
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<nav>
+  <div class="nav-mark">Sithum<span>.V</span></div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#education">Education</a>
+    <a href="#certifications">Certifications</a>
+    <a href="#achievements">Achievements</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="avatar-ring">
+    <div class="avatar" id="avatar">SV</div>
+  </div>
+  <div class="status-chip glass"><span class="dot"></span>Acknowledged by NASA VDP</div>
+  <h1 class="hero-name">Sithum <span class="accent-word">Vihanga</span></h1>
+  <p class="hero-title">Cybersecurity Researcher &amp; Application Security Specialist</p>
+  <div class="hero-contact">
+    <a class="pill glass" href="tel:+94775581899">+94 77 558 1899</a>
+    <a class="pill glass" href="mailto:dmsithumvihanga@gmail.com">dmsithumvihanga@gmail.com</a>
+    <span class="pill glass">Monaragala, 91100</span>
+  </div>
+</section>
+
+<section id="about">
+  <div class="sec-head reveal">
+    <div class="sec-eyebrow">About</div>
+    <div class="sec-title">Who I am</div>
+  </div>
+  <div class="about-panel glass reveal">
+    <p>Highly skilled, self-taught <strong>Cybersecurity Researcher</strong> and <strong>Application Security Specialist</strong> with a proven track record of identifying vulnerabilities in high-security enterprise environments — including NASA.</p>
+    <p>Expert in offensive security, penetration testing, and leveraging custom-built automation tools to expose advanced security flaws that standard tooling misses.</p>
+    <div class="tag-row">
+      <span class="tag">Offensive Security</span>
+      <span class="tag">Penetration Testing</span>
+      <span class="tag">Self-Taught</span>
+      <span class="tag">Arch Linux</span>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="sec-head reveal">
+    <div class="sec-eyebrow">Experience</div>
+    <div class="sec-title">Bug Bounty Hunter</div>
+  </div>
+  <div class="exp-panel glass reveal">
+    <div class="exp-top">
+      <h3>NASA Vulnerability Disclosure Program</h3>
+      <span class="badge-success">Resolved &amp; Disclosed</span>
+    </div>
+    <p>Successfully identified and securely disclosed a WordPress plugin vulnerability within official National Aeronautics and Space Administration (NASA) web infrastructure, officially acknowledged under the handle <strong>dm_sithum_vihanga</strong>.</p>
+    <div class="field-grid">
+      <div><span class="k">Target</span><span class="v">NASA VDP</span></div>
+      <div><span class="k">Vulnerability Class</span><span class="v">WordPress Plugin Flaw</span></div>
+      <div><span class="k">Disclosure Type</span><span class="v">Coordinated / Secure</span></div>
+      <div><span class="k">Outcome</span><span class="v">Officially Acknowledged</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="sec-head reveal">
+    <div class="sec-eyebrow">Skills</div>
+    <div class="sec-title">What I work with</div>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card glass reveal"><span class="skill-dot"></span><span class="skill-name">Vulnerability Assessment</span></div>
+    <div class="skill-card glass reveal"><span class="skill-dot"></span><span class="skill-name">Bug Bounty</span></div>
+    <div class="skill-card glass reveal"><span class="skill-dot"></span><span class="skill-name">Reconnaissance</span></div>
+    <div class="skill-card glass reveal"><span class="skill-dot"></span><span class="skill-name">Web Application Security</span></div>
+    <div class="skill-card glass reveal"><span class="skill-dot"></span><span class="skill-name">Linux Hardening (Arch Linux)</span></div>
+    <div class="skill-card glass reveal"><span class="skill-dot"></span><span class="skill-name">Dark Web Forensics</span></div>
+    <div class="skill-card glass reveal"><span class="skill-dot"></span><span class="skill-name">IoT Hacking Security</span></div>
+    <div class="skill-card glass reveal"><span class="skill-dot"></span><span class="skill-name">OSINT</span></div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="sec-head reveal">
+    <div class="sec-eyebrow">Education</div>
+    <div class="sec-title">Academic background</div>
+  </div>
+  <div class="edu-panel glass reveal">
+    <div>
+      <h3>Higher National Diploma in Cyber Security</h3>
+      <p>Inspire College</p>
+    </div>
+    <span class="edu-status">Currently Following</span>
+  </div>
+</section>
+
+<section id="certifications">
+  <div class="sec-head reveal">
+    <div class="sec-eyebrow">Certifications</div>
+    <div class="sec-title">Professional Certifications &amp; Credentials</div>
+  </div>
+  <div class="cert-grid">
+    <div class="cert-card glass reveal">
+      <div class="name">Ethical Hacker Student-Level Credential</div>
+      <div class="issuer">Cisco Networking Academy</div>
+      <div class="meta"><span>ID —</span><span>Nov 07, 2025</span></div>
+    </div>
+    <div class="cert-card glass reveal">
+      <div class="name">Introduction to Critical Infrastructure Protection (ICIP)</div>
+      <div class="issuer">OPSWAT Academy</div>
+      <div class="meta"><span>ID FdkN3zaq6g</span><span>Nov 07, 2025</span></div>
+    </div>
+    <div class="cert-card glass reveal">
+      <div class="name">Practical Dark Web for Ethical Hackers</div>
+      <div class="issuer">EC-Council | Learning</div>
+      <div class="meta"><span>ID 100007</span><span>Nov 09, 2025</span></div>
+    </div>
+    <div class="cert-card glass reveal">
+      <div class="name">Cyber Deception Demystified</div>
+      <div class="issuer">EC-Council Continuing Education</div>
+      <div class="meta"><span>ID 448768</span><span>Nov 09, 2025</span></div>
+    </div>
+    <div class="cert-card glass reveal">
+      <div class="name">Dark Web Forensics</div>
+      <div class="issuer">EC-Council Continuing Education</div>
+      <div class="meta"><span>ID 448766</span><span>Nov 09, 2025</span></div>
+    </div>
+    <div class="cert-card glass reveal">
+      <div class="name">Deep Web and Cybersecurity</div>
+      <div class="issuer">EC-Council Continuing Education</div>
+      <div class="meta"><span>ID 448762</span><span>Nov 08, 2025</span></div>
+    </div>
+    <div class="cert-card glass reveal">
+      <div class="name">A Practical Introduction to Cloud Computing</div>
+      <div class="issuer">EC-Council Continuing Education</div>
+      <div class="meta"><span>ID 448537</span><span>Nov 07, 2025</span></div>
+    </div>
+    <div class="cert-card glass reveal">
+      <div class="name">Mastering OSINT &amp; Dark Web Intelligence</div>
+      <div class="issuer">EC-Council Continuing Education</div>
+      <div class="meta"><span>ID 448715</span><span>Nov 08, 2025</span></div>
+    </div>
+    <div class="cert-card glass reveal">
+      <div class="name">Introduction to IoT Hacking</div>
+      <div class="issuer">EC-Council Continuing Education</div>
+      <div class="meta"><span>ID 448725</span><span>Nov 08, 2025</span></div>
+    </div>
+    <div class="cert-card glass reveal">
+      <div class="name">Introduction to Dark Web, Anonymity, &amp; Crypto</div>
+      <div class="issuer">EC-Council Continuing Education</div>
+      <div class="meta"><span>ID 448565</span><span>Nov 07, 2025</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="achievements">
+  <div class="sec-head reveal">
+    <div class="sec-eyebrow">Achievements</div>
+    <div class="sec-title">Beyond the screen</div>
+  </div>
+  <div class="achieve-panel glass reveal">
+    <div class="achieve-icon">🥋</div>
+    <div class="achieve-text">
+      <h3>Taekwondo 1st Dan Black Belt</h3>
+      <p>Kukkiwon (World Taekwondo HQ) — ID: 50085649 — Issued Aug 2025</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Sithum Vihanga — Cybersecurity Researcher — Monaragala, Sri Lanka — © 2026
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.15});
+  revealEls.forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
